@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:blog_app/model/post_model.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,7 @@ class UploadBlogPage extends StatefulWidget {
 class _UploadBlogPageState extends State<UploadBlogPage> {
   bool? _isChecked;
   PlatformFile? _platformFile;
+  // List<PostModel> postModelList = [];
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _titleTextEditingController = TextEditingController();
   final TextEditingController _descriptionTextEditingController = TextEditingController();
@@ -30,10 +32,22 @@ class _UploadBlogPageState extends State<UploadBlogPage> {
 
   Future<void> _handleUpload(BuildContext context) async {
     if (_formKey.currentState!.validate() && _platformFile != null) {
-      print(_titleTextEditingController.text);
-      print(_descriptionTextEditingController.text);
+      final title = _titleTextEditingController.text;
+      final description = _descriptionTextEditingController.text;
+      print(title);
+      print(description);
       print(_isChecked);
       print(_platformFile?.path);
+      final postModel = PostModel(
+        title: title,
+        description: description,
+        isFeatured: _isChecked,
+        image: _platformFile!,
+      );
+      // setState(() {
+      //   postModelList.add(postModel);
+      // });
+      Navigator.pop(context, postModel);
     }
   }
 
